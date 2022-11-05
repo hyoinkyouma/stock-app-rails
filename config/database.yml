@@ -1,0 +1,18 @@
+default: &default
+  adapter: "postgresql"
+  host: "containers-us-west-101.railway.app"
+  username: "postgres"
+  password: "noyJicx8KdD8Yoq9WqsO"
+  port: 6605
+
+development:
+  <<: *default
+  database: railway
+
+test:
+  <<: *default
+  database: railway
+
+production:
+  <<: *default
+  database: railway
