@@ -1,0 +1,11 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Users</h1>
+
+<div id="users">
+  <% @users.each do |user| %>
+        <p>user.email</p> 
+    <% end %>
+</div>
+
+<%= link_to "New stock", new_stock_path %>

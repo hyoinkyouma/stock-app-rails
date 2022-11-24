@@ -1,5 +1,6 @@
 class StocksController < ApplicationController
   before_action :set_stock, only: %i[ show edit update destroy ]
+  before_action :check_admin
 
   # GET /stocks or /stocks.json
   def index
@@ -58,6 +59,13 @@ class StocksController < ApplicationController
   end
 
   private
+
+    def check_admin
+      if (current_user.admin)
+        redirect_to "/admin/index"
+      end
+    end
+    
     # Use callbacks to share common setup or constraints between actions.
     def set_stock
       @stock = Stock.find(params[:id])
