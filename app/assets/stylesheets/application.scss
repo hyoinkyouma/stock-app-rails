@@ -1,1 +1,23 @@
 @import "materialize";
+
+nav {
+    position: fixed;
+    top: 0;
+}
+.container {
+    margin-top: 5rem;
+}
+.brand-logo {
+    margin-left: 1rem;
+}
+#users {
+    width: 80vw;
+    max-height: 70vh;
+    overflow-x: scroll;
+}
+.user-item {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}

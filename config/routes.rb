@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
   resources :stocks
-  resources :admin
   devise_for :users, controllers: { confirmations: 'confirmations' }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
+  get "/admin", to: "admin#index", as: "admin_path"
+  put "/togle-status", to: "admin#toggle_account_status", as: "toggle_account_status_path"
+  put "/toggle-admin", to: "admin#toggle_account_admin", as: "toggle_account_admin_path"
   # Defines the root path route ("/")
   # root "articles#index"
   root "stocks#index"

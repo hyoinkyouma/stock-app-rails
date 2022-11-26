@@ -1,0 +1,26 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Users</h1>
+
+<div id="users" class="collection">
+  <% @users.each do |user| %>
+    <li class="collection-item">
+        <div class="user-item">
+          <div>
+          <h5><%= user.first_name%> <%= user.last_name%></h5>
+          <span>Email: <%= user.email%></span>
+          <br />
+          <span>Balance: <%= user.balance%></span>
+          <br />
+          <span>Account Status: <% if user.is_active %> <span class="green-text"> Active </span> <%else%> <span class="red-text"> Inactive </span> <%end%></span>
+          <br />
+          <span>Account Type: <% if user.admin %> Admin <%else%> User <%end%></span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:1rem;">
+            <%= button_to "Toggle Status", toggle_account_status_path_path(id:user.id), method: :put, class:"btn" %>
+            <%= button_to "Toggle Admin", toggle_account_admin_path_path(id:user.id), :disabled => user.id == current_user.id, method: :put, class:"btn red darken-1"%>
+          </div>
+        </div>
+    </li>
+  <% end %>
+</div>

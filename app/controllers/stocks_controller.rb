@@ -1,6 +1,7 @@
 class StocksController < ApplicationController
   before_action :set_stock, only: %i[ show edit update destroy ]
   before_action :check_admin
+  before_action :set_exchange
 
   # GET /stocks or /stocks.json
   def index
@@ -14,6 +15,16 @@ class StocksController < ApplicationController
   # GET /stocks/new
   def new
     @stock = Stock.new
+    begin
+      @quote = @client.quote(params[:stock_symbol])
+      @company_name = @quote.company_name
+      @stock_symbol = @quote.symbol
+      @price = @quote.latest_price
+      
+    rescue IEX::Errors::SymbolNotFoundError
+      redirect_to stocks_search_path, alert: "Symbol not found"
+    end
+    @stock = current_user.stocks.build
   end
 
   # GET /stocks/1/edit
@@ -62,7 +73,7 @@ class StocksController < ApplicationController
 
     def check_admin
       if (current_user.admin)
-        redirect_to "/admin/index"
+        redirect_to "/admin"
       end
     end
     
@@ -73,6 +84,10 @@ class StocksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def stock_params
-      params.require(:stock).permit(:symbol, :desc, :value, :count)
+      params.require(:stock).permit(:stock_name, :symbol, :desc, :value, :count)
+    end
+
+    def set_exchange
+      @iex_client = IEX::Api::Client.new
     end
 end
