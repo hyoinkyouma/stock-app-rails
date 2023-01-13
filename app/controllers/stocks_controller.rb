@@ -1,39 +1,49 @@
 class StocksController < ApplicationController
   before_action :set_stock, only: %i[ show edit update destroy ]
   before_action :check_admin
-  before_action :set_exchange
+  before_action :set_exchange, only: %i[new next create edit update]
+  before_action :check_active
 
   # GET /stocks or /stocks.json
   def index
-    @stocks = Stock.all
+    @stocks = current_user.stocks
   end
 
   # GET /stocks/1 or /stocks/1.json
   def show
   end
 
+  def next
+    split_str = params[:symbol].split('+')
+    @symbol = split_str[0]
+    @name = split_str[1] 
+    @qoute = @client.quote(@symbol)
+    @stock = Stock.new
+  end
+
   # GET /stocks/new
   def new
-    @stock = Stock.new
-    begin
-      @quote = @client.quote(params[:stock_symbol])
-      @company_name = @quote.company_name
-      @stock_symbol = @quote.symbol
-      @price = @quote.latest_price
-      
-    rescue IEX::Errors::SymbolNotFoundError
-      redirect_to stocks_search_path, alert: "Symbol not found"
-    end
-    @stock = current_user.stocks.build
+    @symbols = @client.ref_data_symbols
   end
 
   # GET /stocks/1/edit
   def edit
+    @qoute = @client.quote(@stock[:symbol])
   end
 
   # POST /stocks or /stocks.json
   def create
-    @stock = Stock.new(stock_params)
+    @stock = current_user.stocks.new(stock_params)
+    current_user.balance -= (@stock.count * @stock.value)
+
+    if current_user.balance < 0
+      flash.now[:alert] = "Insufficient Balance"
+      redirect_to :back
+      return
+    else
+      current_user.save
+    end
+    
 
     respond_to do |format|
       if @stock.save
@@ -48,8 +58,27 @@ class StocksController < ApplicationController
 
   # PATCH/PUT /stocks/1 or /stocks/1.json
   def update
+    stock = current_user.stocks.find(params[:id])
+    qoute = @client.quote(stock[:symbol])
+    stock.value = qoute.latest_price
+    stock.count = params[:commit] == "Buy" ? stock.count + params[:change][:count_delta].to_i : stock.count - params[:change][:count_delta].to_i
+
+    current_user.balance = params[:commit] == "Buy" ? current_user.balance.to_i - (params[:change][:count_delta].to_i * qoute.latest_price).to_i : current_user.balance.to_i + (params[:change][:count_delta].to_i * qoute.latest_price).to_i
+
+    if stock.count < 0
+      flash.now[:alert] = "Insufficient Inventory"
+      return
+    end
+    if params[:commit] == "Buy" && current_user.balance < 0
+      flash.now[:alert] = "Insufficient Balance"
+      return
+    else
+      current_user.save
+    end
+
+
     respond_to do |format|
-      if @stock.update(stock_params)
+      if stock.save
         format.html { redirect_to stock_url(@stock), notice: "Stock was successfully updated." }
         format.json { render :show, status: :ok, location: @stock }
       else
@@ -71,6 +100,12 @@ class StocksController < ApplicationController
 
   private
 
+    def check_active
+      if (!current_user.is_active)
+        redirect_to "/inactive-account"
+      end
+    end
+
     def check_admin
       if (current_user.admin)
         redirect_to "/admin"
@@ -87,7 +122,13 @@ class StocksController < ApplicationController
       params.require(:stock).permit(:stock_name, :symbol, :desc, :value, :count)
     end
 
+
     def set_exchange
-      @iex_client = IEX::Api::Client.new
+      @client = IEX::Api::Client.new ({
+        publishable_token: ENV['PUBLISHABLE_TOKEN'],
+        secret_token: ENV['SECRET_TOKEN'],
+        endpoint: 'https://cloud.iexapis.com/v1'
+      }
+      )
     end
 end

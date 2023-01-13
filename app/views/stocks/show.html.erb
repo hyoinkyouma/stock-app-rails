@@ -1,10 +1,7 @@
-<p style="color: green"><%= notice %></p>
+<h5>Balance: <%= current_user.balance%> USD</h5>
 
 <%= render @stock %>
 
 <div>
-  <%= link_to "Edit this stock", edit_stock_path(@stock) %> |
-  <%= link_to "Back to stocks", stocks_path %>
-
-  <%= button_to "Destroy this stock", @stock, method: :delete %>
+  <%= button_to "Back to stocks", stocks_path, class:"waves-effect waves-light btn", method: :get %>
 </div>

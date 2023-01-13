@@ -1,7 +1,20 @@
 <h1>Editing stock</h1>
 
-<%= render "form", stock: @stock %>
-
+      <ul class="collection with-header">
+        <li class="collection-header"><h4><%=@stock.stock_name%></h4></li>
+        <li class="collection-item">Symbol: <%=@stock.symbol%></li>
+        <li class="collection-item">Purchase Price: <%=@stock.value%></li>
+        <li class="collection-item">Latest Price: <%=@qoute.latest_price%></li>
+        <li class="collection-item">Inventory: <%=@stock.count%></li>
+        <li class="collection-item">Total Value: <%=@stock.count * @qoute.latest_price%></li>
+      </ul> 
+      <%= form_for :change, method: :put, url: stock_path do |f|%>
+        <%= f.number_field :stock_id, value: @stock.id, readonly: true, class:"hide"%>
+        <%=label_tag "Amount"%>
+        <%=f.number_field :count_delta %>
+        <%=f.submit "Buy"%>
+        <%=f.submit "Sell"%>
+      <%end%>
 <br>
 
 <div>

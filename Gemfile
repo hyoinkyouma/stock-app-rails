@@ -2,6 +2,7 @@ source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.1.2"
+gem 'dotenv-rails', groups: [:development, :test]
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.4"
@@ -10,10 +11,11 @@ gem "rails", "~> 7.0.4"
 gem "sprockets-rails"
 
 # Stuff you added
+gem 'dotenv-rails', require: 'dotenv/rails-now'
 gem "pg"
 gem "iex-ruby-client"
 gem 'devise'
-gem 'materialize-sass'
+gem "materialize-sass", git: "https://github.com/Joaquinb2000/materialize-sass-rails-7.git"
 gem "sassc-rails"
 
 # Use the Puma web server [https://github.com/puma/puma]

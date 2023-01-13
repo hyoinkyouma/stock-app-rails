@@ -1,14 +1,22 @@
-<p style="color: green"><%= notice %></p>
-
-<h1>Your Portfolio</h1>
-
-<div id="stocks">
-  <% @stocks.each do |stock| %>
-    <%= render stock %>
-    <p>
-      <%= link_to "Show this stock", stock %>
-    </p>
-  <% end %>
+<div class="row valign-wrapper" style="justify-content:space-between">
+  <div class="col s12 valign-wrapper" style="justify-content:space-between">
+    <div class="left-align" style="padding:0px 5px;">
+      <h1>Your Portfolio</h1>
+      <div style="padding:0px 10px;">
+      <h5><%="#{current_user.first_name} #{current_user.last_name}"%></h5>
+      <h5>Balance: <%= current_user.balance%> USD</h5>
+      </div>
+    </div>
+    <div class="center-align">
+      <%= link_to "+", new_stock_path, class:"btn-floating btn-large waves-effect waves-light red", data:{turbo:false} %>
+    </div>
+  </div>
 </div>
 
-<%= link_to "New stock", new_stock_path %>
+<div class="row">
+  <div id="stocks">
+    <% @stocks.each do |stock| %>
+      <%= render stock %>
+    <% end %>
+  </div>
+</div>

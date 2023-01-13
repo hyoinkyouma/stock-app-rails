@@ -1,9 +1,19 @@
-<h1>New stock</h1>
-
-<%= render "form", stock: @stock %>
-
-<br>
-
-<div>
-  <%= link_to "Back to stocks", stocks_path %>
+<div class="row">
+<h2>Buy Stocks</h2>   
+</div>
+<div class="row">
+<form action="/next/" accept-charset="UTF-8" method="get" class="input-field col s12">
+    <%=@market%>
+    <select name="symbol">
+      <%= @symbols.each do |symbol|%>
+        <option value="<%=symbol.symbol%>+<%=symbol.name%>"><%=symbol.name%></option>
+      <%end%>
+    </select>
+    <label>Select Stocks</label>
+    <div class="valign-wrapper" style="gap:1rem;">
+    <%= link_to "Back", stocks_path, class:"waves-effect waves-light btn red" %>
+    <button class="waves-effect waves-light btn">See Details</button>
+    </div>
+</form>
+</div>
 </div>

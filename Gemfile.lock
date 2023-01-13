@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/Joaquinb2000/materialize-sass-rails-7.git
+  revision: c89a6bfe691a9f50ec02a264fa7480461db81780
+  specs:
+    materialize-sass (1.1.0.alpha)
+      autoprefixer-rails (>= 9.1.0)
+      sassc-rails (>= 2.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -96,6 +104,10 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    dotenv (2.8.1)
+    dotenv-rails (2.8.1)
+      dotenv (= 2.8.1)
+      railties (>= 3.2)
     erubi (1.11.0)
     execjs (2.8.1)
     faraday (1.10.2)
@@ -150,8 +162,6 @@ GEM
     mail (2.7.1)
       mini_mime (>= 0.1.1)
     marcel (1.0.2)
-    materialize-sass (1.0.0.1)
-      autoprefixer-rails (>= 6.0.3)
     matrix (0.4.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
@@ -272,6 +282,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-21
+  arm64-darwin-22
   x64-mingw-ucrt
 
 DEPENDENCIES
@@ -279,10 +290,11 @@ DEPENDENCIES
   capybara
   debug
   devise
+  dotenv-rails
   iex-ruby-client
   importmap-rails
   jbuilder
-  materialize-sass
+  materialize-sass!
   pg
   puma (~> 5.0)
   rails (~> 7.0.4)

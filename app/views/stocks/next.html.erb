@@ -1,0 +1,21 @@
+<div class="valign-wrapper" style="height:70vh; display:flex; flex-direction:column; align-items:start">
+<h3>Buy Stock</h3>
+<h5>Balance: <%= current_user.balance%> USD</h5>
+
+<%=form_for @stock do |f|%>
+    <%= label_tag :stock_name%>
+    <%= f.text_field :stock_name, class: 'black-text',value: @name, readonly: true %>
+    
+    <%= label_tag :symbol%>
+    <%= f.text_field :symbol, class:'black-text',value: @symbol,  readonly: true%>
+
+    <%= label_tag "Current Market Price in USD"%>
+    <%= f.text_field :value, class: 'black-text',value: number_to_currency(@qoute.latest_price, delimiter: '', unit: ''),  readonly: true %>
+    <%= label_tag "Change"%>
+    <%= text_field_tag :change, @qoute.change_percent, class: @qoute.change_percent.negative? ? "red-text" : "green-text",  readonly: true%>
+    <%= label_tag "Quantity"%>
+    <%= f.number_field :count, class: 'number_field' %>
+    <%= link_to "Cancel", stocks_path, class:"waves-effect waves-light btn red" %>
+    <%= f.submit "Buy Stock", class:"waves-effect waves-light btn"%>
+<%end%>
+</div>

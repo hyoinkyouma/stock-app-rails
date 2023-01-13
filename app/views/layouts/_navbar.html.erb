@@ -1,10 +1,10 @@
 <nav>
-<div class="nav-wrapper teal lighten-2">
-  <a href="#" class="brand-logo">Stock App</a>
+<div class="nav-wrapper teal lighten-2" style="padding:0px 10px; z-index:0;">
+  <a href="/" class="brand-logo">Stock App</a>
   <ul id="nav-mobile" class="right hide-on-med-and-down">
     <% if user_signed_in? %>
       <li><a href="/"> Manage <%if !current_user.admin %> Stocks <%else%> Users <%end%></a></li>
-      <li><a href="badges.html">Profile</a></li>
+      <li><%= link_to "Profile", edit_user_registration_path %></li>
       <li><%= link_to "Sign Out", destroy_user_session_path %></li>
     <%end%>
   </ul>
