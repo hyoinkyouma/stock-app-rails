@@ -1,4 +1,4 @@
-<h1>Editing stock</h1>
+<h1>Buy/Sell Stock</h1>
 
       <ul class="collection with-header">
         <li class="collection-header"><h4><%=@stock.stock_name%></h4></li>
@@ -12,8 +12,8 @@
         <%= f.number_field :stock_id, value: @stock.id, readonly: true, class:"hide"%>
         <%=label_tag "Amount"%>
         <%=f.number_field :count_delta %>
-        <%=f.submit "Buy"%>
-        <%=f.submit "Sell"%>
+          <%=f.submit "Buy", class:"waves-effect waves-light btn"%>
+          <%=f.submit "Sell", class:"waves-effect waves-light btn red"%>
       <%end%>
 <br>
 
